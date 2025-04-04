@@ -1,6 +1,6 @@
 # GitHub Workflow for Container Deployment
 
-This repository demonstrates a GitHub Actions workflow that automates building a Docker container, pushing it to AWS ECR, and deploying it using System Initiative.
+This repository demonstrates a GitHub Actions workflow that automates building a Docker container, pushing it to AWS ECR, and deploying it using System Initiative!
 
 ## Workflow Overview
 
