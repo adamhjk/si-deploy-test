@@ -33,7 +33,7 @@ jobs:
         with:
           changeSet: GHA-Deploy-${{ github.sha }}
           componentId: 01JQZ216QV907E3H95H8AXYPAH
-          managementFunction: Run Deploy
+          managementFunction: Deploy
           domain: |
             Image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/adamhjk/demodeploy:${{ github.sha }}
           apiToken: ${{ secrets.SI_API_TOKEN }}
