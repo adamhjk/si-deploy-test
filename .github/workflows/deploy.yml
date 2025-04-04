@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+# Add concurrency to ensure only one workflow runs at a time on main
+concurrency:
+  group: main-branch-deployment
+  cancel-in-progress: false
+
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
