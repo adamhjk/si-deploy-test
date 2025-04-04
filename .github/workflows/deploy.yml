@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
 
       - name: Build and Push to ECR
-        uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+        uses: kciter/aws-ecr-action:v5
         with:
           access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -24,6 +24,7 @@ jobs:
           region: us-west-2
           tags: latest,${{ github.sha }}
           extra_build_args: "--build-arg GIT_COMMIT=${{ github.sha }}"
+          path: .
         env:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
