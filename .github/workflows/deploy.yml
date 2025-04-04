@@ -14,22 +14,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          load: true
-          build-args: |
-            GIT_COMMIT=${{ github.sha }}
-          tags: |
-            nginx-commit:latest
-            nginx-commit:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
       - name: Build and Push to ECR
         uses: docker://ghcr.io/kciter/aws-ecr-action:latest
         with:
@@ -39,6 +23,7 @@ jobs:
           repo: adamhjk/demodeploy
           region: us-west-2
           tags: latest,${{ github.sha }}
+          extra_build_args: "--build-arg GIT_COMMIT=${{ github.sha }}"
         env:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
