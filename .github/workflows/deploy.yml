@@ -1,0 +1,52 @@
+name: Build, Push and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          build-args: |
+            GIT_COMMIT=${{ github.sha }}
+          tags: |
+            nginx-commit:latest
+            nginx-commit:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push to ECR
+        uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          repo: adamhjk/updateflow
+          region: us-west-2
+          tags: latest,${{ github.sha }}
+        env:
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Trigger System Initiative Deployment
+        uses: systeminit/actions@v0
+        with:
+          changeSet: GHA-Deploy-${{ github.sha }}
+          componentId: 01JQZ216QV907E3H95H8AXYPAH
+          managementFunction: Run Deploy
+          apiToken: ${{ secrets.SI_API_TOKEN }}
+          waitForActions: true

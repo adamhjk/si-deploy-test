@@ -1,18 +1,16 @@
-# Use an official lightweight image with git and nginx
+# Use an official lightweight nginx image
 FROM nginx:alpine
-
-# Install git
-RUN apk add --no-cache git
 
 # Set working directory
 WORKDIR /app
 
-# Copy the git repo into the image (assumes Dockerfile is in the repo root)
+# We don't need git in the image
+# Copy only necessary files
 COPY . .
 
-# Get the latest git commit hash and create index.html
-RUN git_commit=$(git rev-parse HEAD) && \
-    echo "Hello ${git_commit}" > /usr/share/nginx/html/index.html
+# Create index.html with commit hash (provided as build arg)
+ARG GIT_COMMIT=unknown
+RUN echo "Hello ${GIT_COMMIT}" > /usr/share/nginx/html/index.html
 
 # Expose port 80
 EXPOSE 80
