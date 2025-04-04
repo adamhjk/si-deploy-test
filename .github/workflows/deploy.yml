@@ -43,7 +43,7 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
       - name: Trigger System Initiative Deployment
-        uses: systeminit/actions@v0
+        uses: systeminit/actions@v0.1
         with:
           changeSet: GHA-Deploy-${{ github.sha }}
           componentId: 01JQZ216QV907E3H95H8AXYPAH
