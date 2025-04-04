@@ -35,6 +35,11 @@ on:
     branches:
       - main
 
+# Ensures only one workflow runs at a time on main branch
+concurrency:
+  group: main-branch-deployment
+  cancel-in-progress: false
+
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
@@ -100,3 +105,8 @@ CMD ["nginx", "-g", "daemon off;"]
 3. **GitHub Trigger**
    - Activates on push to the main branch
    - You can modify the branch or add other triggers as needed
+
+4. **Concurrency Control**
+   - Prevents multiple workflow runs from executing simultaneously
+   - New workflows wait until current ones complete (with `cancel-in-progress: false`)
+   - Ensures deployments happen sequentially on the main branch
