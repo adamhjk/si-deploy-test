@@ -5,7 +5,7 @@ set -e
 # Configurable variables
 ACCOUNT_ID="104640795146"
 REGION="us-west-2"
-REPO_NAME="adamhjk/updateflow"
+REPO_NAME="adamhjk/demodeploy"
 IMAGE_NAME="nginx-commit"
 
 # Get the short Git SHA
