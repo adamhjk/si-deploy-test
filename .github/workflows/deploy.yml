@@ -38,3 +38,4 @@ jobs:
             Image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/adamhjk/demodeploy:${{ github.sha }}
           apiToken: ${{ secrets.SI_API_TOKEN }}
           waitForActions: true
+          waitForApproval: force
